@@ -42,15 +42,14 @@ describe('Node Execute Builder', () => {
         envPath: 'example/apps/api/.env'
       },
       { logger }
-    ); // We pass the logger for checking later.
+    );
 
-    run.output.pipe(take(1)).subscribe(
-      out => {
+    run.output.pipe(take(2)).subscribe({
+      next: out => {
         output.push(out);
       },
-      error => {},
-      // Clean up on the completion
-      async () => {
+      complete: async () => {
+        // Clean up on the completion
         // Stop the builder
         await run.stop();
 
@@ -61,7 +60,7 @@ describe('Node Execute Builder', () => {
 
         done();
       }
-    );
+    });
   });
 
   it('should copy non-TypeScript files to the output directory', async done => {
@@ -77,9 +76,9 @@ describe('Node Execute Builder', () => {
         envPath: 'example/apps/api/.env'
       },
       { logger }
-    ); // We pass the logger for checking later.
+    );
 
-    run.output.pipe(take(1)).subscribe(
+    run.output.pipe(take(2)).subscribe(
       out => {},
       error => {},
       // Clean up on the completion
@@ -114,7 +113,7 @@ describe('Node Execute Builder', () => {
       { logger }
     ); // We pass the logger for checking later.
 
-    run.output.pipe(take(1)).subscribe(
+    run.output.pipe(take(2)).subscribe(
       out => {},
       error => {},
       // Clean up on the completion
@@ -146,9 +145,9 @@ describe('Node Execute Builder', () => {
         envPath: 'example/apps/api/.env'
       },
       { logger }
-    ); // We pass the logger for checking later.
+    );
 
-    run.output.pipe(take(1)).subscribe(
+    run.output.pipe(take(2)).subscribe(
       out => {},
       error => {},
       // Clean up on the completion
@@ -181,7 +180,7 @@ describe('Node Execute Builder', () => {
       { logger }
     ); // We pass the logger for checking later.
 
-    run.output.pipe(take(1)).subscribe(
+    run.output.pipe(take(2)).subscribe(
       out => {},
       error => {},
       // Clean up on the completion
@@ -212,7 +211,7 @@ describe('Node Execute Builder', () => {
       { logger }
     ); // We pass the logger for checking later.
 
-    run.output.pipe(take(1)).subscribe(
+    run.output.pipe(take(2)).subscribe(
       out => {
         output.push(out);
       },

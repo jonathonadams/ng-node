@@ -81,6 +81,14 @@ export function tscWatch(
       observer.error(data.toString());
     });
 
+    cp.on('close', (code, signal) => {
+      if (code === 0) {
+        observer.complete();
+      } else {
+        observer.error({ code, signal });
+      }
+    });
+
     return {
       unsubscribe() {
         treeKill(cp.pid, 'SIGKILL');
@@ -177,14 +185,19 @@ export function node(
       context.logger.error(data.toString());
     });
 
-    // Report next after some arbitrary time
-    const timer = setTimeout(() => {
-      observer.next('Node application started');
-    }, 1000);
+    cp.on('close', (code, signal) => {
+      if (code === 0) {
+        observer.next('Node application finished.');
+        observer.complete();
+      } else {
+        observer.error({ code, signal });
+      }
+    });
+
+    observer.next('Node application started');
 
     return {
       unsubscribe() {
-        clearTimeout(timer);
         treeKill(cp.pid, 'SIGKILL');
       }
     };
