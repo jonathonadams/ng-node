@@ -4,6 +4,9 @@
 tsconfig.json
 tslint.json
 CODE_OF_CONDUCT.md
+CHANGELOG.md
 jest.config.js
+setup-jest.js
 package-lock.json
 coverage/*
+example/**
