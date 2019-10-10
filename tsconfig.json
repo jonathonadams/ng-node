@@ -1,0 +1,16 @@
+{
+  "forceConsistentCasingInFileNames": true,
+  "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "src",
+    "declaration": true,
+    "esModuleInterop": true,
+    "removeComments": true,
+    "target": "es2018",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "lib": ["es2018"]
+  },
+  "exclude": ["node_modules", "dist", "example", "**/*.spec.ts"]
+}

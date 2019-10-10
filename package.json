@@ -1,0 +1,87 @@
+{
+  "name": "@uqt/ng-node",
+  "version": "1.0.0",
+  "description": "Angular CLI builders for node applications",
+  "builders": "builders.json",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/unquenchablethyrst/ng-node"
+  },
+  "keywords": [
+    "Angular",
+    "ng",
+    "Builder",
+    "node"
+  ],
+  "author": "Jonathon Adams",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "commit": "npx git-cz",
+    "build": "tsc",
+    "lint": "tslint --project tsconfig.json",
+    "example:build": "tsc --build example/apps/api/tsconfig.json",
+    "example:run": "node example/out/apps/api/index.js",
+    "test": "jest --coverage --runInBand",
+    "validate": "npm run lint && npm run test",
+    "report-coverage": "./node_modules/.bin/codecov",
+    "prepare": "npm run build && npm run validate",
+    "semantic-release": "semantic-release"
+  },
+  "dependencies": {
+    "@angular-devkit/architect": "^0.803.8",
+    "@uqt/ts-path-replace": "0.0.2",
+    "cp-file": "^7.0.0",
+    "cross-env": "^6.0.3",
+    "del": "^5.1.0",
+    "dotenv": "^8.1.0",
+    "glob": "^7.1.4",
+    "tree-kill": "^1.2.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
+    "@semantic-release/changelog": "^3.0.4",
+    "@semantic-release/git": "^7.0.16",
+    "@types/glob": "^7.1.1",
+    "@types/jest": "^24.0.18",
+    "@types/node": "^12.7.12",
+    "codecov": "^3.6.1",
+    "commitizen": "^4.0.3",
+    "cz-conventional-changelog": "^3.0.2",
+    "husky": "^3.0.8",
+    "jest": "^24.9.0",
+    "rimraf": "^3.0.0",
+    "semantic-release": "^15.13.24",
+    "ts-jest": "^24.1.0",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run validate",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
+  },
+  "release": {
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/changelog",
+      "@semantic-release/npm",
+      "@semantic-release/git"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  }
+}
