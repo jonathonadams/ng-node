@@ -74,9 +74,3 @@ workflows:
           filters:
             branches:
               only: master
-      - report-coverage:
-          requires:
-            - release
-          filters:
-            branches:
-              only: master
