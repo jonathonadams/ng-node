@@ -1,4 +1,5 @@
-import { spawn } from 'child_process';
+import { platform, type } from 'os';
+import { spawn, SpawnOptionsWithoutStdio } from 'child_process';
 import { normalize } from 'path';
 import { Observable, combineLatest } from 'rxjs';
 import { tap, mapTo, catchError, switchMap, filter } from 'rxjs/operators';
@@ -58,6 +59,14 @@ function _executeApiBuilder(
   );
 }
 
+const spawnOptions: SpawnOptionsWithoutStdio = {
+  stdio: 'pipe'
+};
+
+if (platform() === 'win32') {
+  spawnOptions.shell = true;
+}
+
 export function tscWatch(
   options: ServerExecuteSchema,
   context: BuilderContext
@@ -67,9 +76,11 @@ export function tscWatch(
       context.workspaceRoot + '/node_modules/.bin/tsc'
     )}`;
 
-    const cp = spawn(command, ['-b', options.tsConfig, '--watch'], {
-      stdio: 'pipe'
-    });
+    const cp = spawn(
+      command,
+      ['-b', options.tsConfig, '--watch'],
+      spawnOptions
+    );
 
     cp.stdout.on('data', data => {
       context.logger.info(data.toString());
@@ -109,9 +120,7 @@ export function tsprWatch(
     const cp = spawn(
       command,
       ['--tsConfig', options.tsConfig, '--watch', '--references'],
-      {
-        stdio: 'pipe'
-      }
+      spawnOptions
     );
 
     cp.stdout.on('data', data => {
@@ -120,8 +129,11 @@ export function tsprWatch(
     });
 
     /* istanbul ignore next */
-    cp.stderr.on('data', data => {
-      observer.error(data.toString());
+    cp.stderr.on('data', (data: Buffer) => {
+      // TODO - this is so it supports node v10. Remove once v12 is released and stable
+      if (!data.toString().includes('The fs.promises API is experimental')) {
+        observer.error(data.toString());
+      }
     });
 
     cp.on('close', (code, signal) => {
@@ -167,9 +179,7 @@ export function node(
       args = ['NODE_ENV=dev', 'node', `${options.outputPath}/${options.main}`];
     }
 
-    const cp = spawn(command, args, {
-      stdio: 'pipe'
-    });
+    const cp = spawn(command, args, spawnOptions);
 
     cp.stdout.on('data', data => {
       // DO not call on observer on next here, it wall report multiple success

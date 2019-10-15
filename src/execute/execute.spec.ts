@@ -78,11 +78,9 @@ describe('Node Execute Builder', () => {
       { logger }
     );
 
-    run.output.pipe(take(2)).subscribe(
-      out => {},
-      error => {},
+    run.output.pipe(take(2)).subscribe({
       // Clean up on the completion
-      async () => {
+      complete: async () => {
         // Stop the builder
         await run.stop();
 
@@ -92,7 +90,7 @@ describe('Node Execute Builder', () => {
 
         done();
       }
-    );
+    });
   });
 
   it('should run the application', async done => {
@@ -113,11 +111,9 @@ describe('Node Execute Builder', () => {
       { logger }
     ); // We pass the logger for checking later.
 
-    run.output.pipe(take(2)).subscribe(
-      out => {},
-      error => {},
+    run.output.pipe(take(2)).subscribe({
       // Clean up on the completion
-      async () => {
+      complete: async () => {
         // Stop the builder
         await run.stop();
 
@@ -126,7 +122,7 @@ describe('Node Execute Builder', () => {
         expect(logFile).toContain('Logging from Lib 1');
         done();
       }
-    );
+    });
   });
 
   it('should pull in the environment variables from the .env file', async done => {
@@ -147,11 +143,9 @@ describe('Node Execute Builder', () => {
       { logger }
     );
 
-    run.output.pipe(take(2)).subscribe(
-      out => {},
-      error => {},
+    run.output.pipe(take(2)).subscribe({
       // Clean up on the completion
-      async () => {
+      complete: async () => {
         // Stop the builder
         await run.stop();
 
@@ -160,7 +154,7 @@ describe('Node Execute Builder', () => {
         expect(logFile).toContain('SOME TEST ENVIRONMENT VARIABLE');
         done();
       }
-    );
+    });
   });
 
   it('should not pull in the environment variables if no file path is provided', async done => {
@@ -180,11 +174,9 @@ describe('Node Execute Builder', () => {
       { logger }
     ); // We pass the logger for checking later.
 
-    run.output.pipe(take(2)).subscribe(
-      out => {},
-      error => {},
+    run.output.pipe(take(2)).subscribe({
       // Clean up on the completion
-      async () => {
+      complete: async () => {
         // Stop the builder
         await run.stop();
 
@@ -193,7 +185,7 @@ describe('Node Execute Builder', () => {
         expect(logFile).not.toContain('SOME TEST ENVIRONMENT VARIABLE');
         done();
       }
-    );
+    });
   });
 
   it('should report unsuccessfully if an error is thrown', async done => {
@@ -211,13 +203,12 @@ describe('Node Execute Builder', () => {
       { logger }
     ); // We pass the logger for checking later.
 
-    run.output.pipe(take(2)).subscribe(
-      out => {
+    run.output.pipe(take(2)).subscribe({
+      next: out => {
         output.push(out);
       },
-      error => {},
       // Clean up on the completion
-      async () => {
+      complete: async () => {
         // Stop the builder
         await run.stop();
 
@@ -228,6 +219,6 @@ describe('Node Execute Builder', () => {
 
         done();
       }
-    );
+    });
   });
 });
