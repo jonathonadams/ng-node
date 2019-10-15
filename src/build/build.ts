@@ -1,6 +1,6 @@
 import { exec } from 'child_process';
 import { normalize } from 'path';
-import { Observable, throwError } from 'rxjs';
+import { Observable } from 'rxjs';
 import { mapTo, catchError, switchMap } from 'rxjs/operators';
 import { tsc, copy, ServerBuildSchema } from '../utils/utils';
 import treeKill from 'tree-kill';
