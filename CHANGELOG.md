@@ -1,3 +1,10 @@
+## [0.0.4](https://github.com/unquenchablethyrst/ng-node/compare/v0.0.3...v0.0.4) (2019-10-20)
+
+
+### Bug Fixes
+
+* **deps:** update dependencies to fix windows path seperator issues ([1831f5f](https://github.com/unquenchablethyrst/ng-node/commit/1831f5f))
+
 ## [0.0.3](https://github.com/unquenchablethyrst/ng-node/compare/v0.0.2...v0.0.3) (2019-10-15)
 
 
