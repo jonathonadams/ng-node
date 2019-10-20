@@ -77,19 +77,19 @@ export function tsc(
     const cp = exec(
       `${command} -b ${options.tsConfig}`,
       (error, stdout, stderr) => {
-        if (error) {
-          observer.error(error.toString());
-        }
-
         // TODO ? is this the right thing for serve as well
         if (stdout.toString().includes('error')) {
           observer.error(stdout.toString());
         }
 
-        // A successfully run produces no output
-        context.logger.info(stdout);
-        observer.next(stdout);
-        observer.complete();
+        if (error) {
+          observer.error(error.toString());
+        } else {
+          // A successfully run produces no output
+          context.logger.info(stdout);
+          observer.next(stdout);
+          observer.complete();
+        }
       }
     );
 
