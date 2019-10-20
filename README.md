@@ -17,14 +17,14 @@ Two builders are provided with this package. A `build` and `execute` builder.
 The `build` builder will:
 
 1. Compile your TypeScript code
-2. Re-write and replace the TypeScrip alias paths (`@some/alias`) to relative paths(`../../some/relative/paths`) using [@uqt/tspr](https://github.com/unquenchablethyrst/ts-paths-replace)
+2. Re-write and replace the TypeScrip alias paths (`@some/alias`) to relative paths(`../../some/relative/paths`) using [@uqt/ts-path-replace](https://github.com/unquenchablethyrst/ts-paths-replace)
 3. Copy all non TypeScript (.ts) files from the project `rooDir` to the `outDir`
 4. The builder will exit once steps 1 - 3 complete.
 
 The `execute` builder will:
 
 1. Compile your TypeScript code
-2. Re-write and replace the TypeScrip alias paths (`@some/alias`) to relative paths(`../../some/relative/paths`) using [@uqt/tspr](https://github.com/unquenchablethyrst/ts-paths-replace)
+2. Re-write and replace the TypeScrip alias paths (`@some/alias`) to relative paths(`../../some/relative/paths`) using [@uqt/ts-path-replace](https://github.com/unquenchablethyrst/ts-paths-replace)
 3. Copy all non TypeScript (.ts) files from the project `rooDir` to the `outDir`
 4. Run your application
 5. Watch for changes in the source files and repeat the steps 1 - 4 on each change
