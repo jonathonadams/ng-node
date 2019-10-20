@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@angular-devkit/architect": "^0.803.8",
-    "@uqt/ts-path-replace": "0.0.5",
+    "@uqt/ts-path-replace": "^0.0.5",
     "cp-file": "^7.0.0",
     "cross-env": "^6.0.3",
     "del": "^5.1.0",
