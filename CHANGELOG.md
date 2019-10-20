@@ -1,3 +1,10 @@
+## [0.0.5](https://github.com/unquenchablethyrst/ng-node/compare/v0.0.4...v0.0.5) (2019-10-20)
+
+
+### Bug Fixes
+
+* **execute:** update typescript path replace to fix file watching ([6c69536](https://github.com/unquenchablethyrst/ng-node/commit/6c695360814cadec05acebed54fa8617488e7a81))
+
 ## [0.0.4](https://github.com/unquenchablethyrst/ng-node/compare/v0.0.3...v0.0.4) (2019-10-20)
 
 
