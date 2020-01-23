@@ -38,7 +38,7 @@ function _executeApiBuilder(
     filter(data => data.includes('Watching'))
   );
   /**
-   * As typescript does not currently rewrite path aliases, use package '@utz/tspr' in watch
+   * As typescript does not currently rewrite path aliases, use package '@uqt/ts-path-replace' in watch
    * mode to re-write all import aliases
    */
   const tspr$ = tsprWatch(options, context);

@@ -8,7 +8,7 @@ import cpFile from 'cp-file';
 import { BuilderContext } from '@angular-devkit/architect';
 import { JsonObject } from '@angular-devkit/core';
 import { Observable, of, forkJoin } from 'rxjs';
-import { map, switchMap, take, tap } from 'rxjs/operators';
+import { map, switchMap, take } from 'rxjs/operators';
 // @ts-ignore
 import rimraf from 'rimraf';
 
