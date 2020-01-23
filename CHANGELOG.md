@@ -1,3 +1,10 @@
+## [0.0.6](https://github.com/unquenchablethyrst/ng-node/compare/v0.0.5...v0.0.6) (2020-01-23)
+
+
+### Bug Fixes
+
+* **deps:** move type definitions to dependencies ([96dfbdf](https://github.com/unquenchablethyrst/ng-node/commit/96dfbdfa60eb9d618e72427058eb76ee9e544fc7))
+
 ## [0.0.5](https://github.com/unquenchablethyrst/ng-node/compare/v0.0.4...v0.0.5) (2019-10-20)
 
 
