@@ -1,18 +1,14 @@
 import { normalize } from 'path';
-import fs, { access } from 'fs';
 import { exec } from 'child_process';
-import { promisify } from 'util';
 import treeKill from 'tree-kill';
-import glob from 'glob';
 import cpFile from 'cp-file';
 import { BuilderContext } from '@angular-devkit/architect';
 import { JsonObject } from '@angular-devkit/core';
 import { Observable, of, forkJoin, EMPTY } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
-// @ts-ignore
-import rimraf from 'rimraf';
 
-const rimrafP = promisify(rimraf);
+// @ts-ignore
+import glob from 'glob';
 
 // Interfaces for the build and execute schemas
 export interface ServerBuildSchema extends JsonObject {
@@ -28,7 +24,7 @@ export interface ServerExecuteSchema extends ServerBuildSchema {
 
 export function globObservable(pattern: string): Observable<string[]> {
   return new Observable((observer) => {
-    glob(pattern, (err, matches) => {
+    glob(pattern, (err: any, matches: string[]) => {
       if (err) {
         observer.error(err);
       }
@@ -50,19 +46,6 @@ export function outputFile(outPath: string, srcDir: string) {
   return function (srcFile: string) {
     return `${outPath}${srcFile.substr(srcDir.length, srcFile.length)}`;
   };
-}
-
-export async function removeExampleOutDir() {
-  const outDir = 'example/out';
-  return rimrafP(outDir);
-}
-
-export function hasTxtFileBeenCopied(): Promise<boolean> {
-  return new Promise((rs, re) => {
-    access('example/out/apps/api/text.txt', fs.constants.F_OK, (err) => {
-      err ? rs(false) : rs(true);
-    });
-  });
 }
 
 export function tsc(
