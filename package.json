@@ -6,7 +6,7 @@
   "type": "commonjs",
   "repository": {
     "type": "git",
-    "url": "https://github.com/unquenchablethyrst/ng-node"
+    "url": "https://github.com/jonathonadams/ng-node"
   },
   "keywords": [
     "Angular",
@@ -32,7 +32,6 @@
     "semantic-release": "semantic-release"
   },
   "dependencies": {
-    "@angular-devkit/architect": "^0.1000.3",
     "@uqt/ts-path-replace": "^1.0.0",
     "cp-file": "^9.0.0",
     "cross-env": "^7.0.2",
@@ -40,7 +39,11 @@
     "glob": "^7.1.6",
     "tree-kill": "^1.2.2"
   },
+  "peerDependencies": {
+    "@angular-devkit/architect": "0.x"
+  },
   "devDependencies": {
+    "@angular-devkit/architect": "^0.1000.3",
     "@commitlint/cli": "^9.1.1",
     "@commitlint/config-conventional": "^9.1.1",
     "@semantic-release/changelog": "^5.0.1",
