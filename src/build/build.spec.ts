@@ -1,8 +1,8 @@
+import { join } from 'path';
 import { Architect, BuilderOutput } from '@angular-devkit/architect';
 import { TestingArchitectHost } from '@angular-devkit/architect/testing';
 import { logging, schema } from '@angular-devkit/core';
-import { removeExampleOutDir, hasTxtFileBeenCopied } from '../utils/utils';
-import { join } from 'path';
+import { removeExampleOutDir, hasTxtFileBeenCopied } from '../__tests__/utils';
 
 describe('Node Build Builder', () => {
   let architect: Architect;

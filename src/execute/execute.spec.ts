@@ -2,7 +2,7 @@ import { Architect, BuilderOutput } from '@angular-devkit/architect';
 import { TestingArchitectHost } from '@angular-devkit/architect/testing';
 import { logging, schema } from '@angular-devkit/core';
 import { take } from 'rxjs/operators';
-import { removeExampleOutDir, hasTxtFileBeenCopied } from '../utils/utils';
+import { removeExampleOutDir, hasTxtFileBeenCopied } from '../__tests__/utils';
 import { join } from 'path';
 
 // XXX -> deceleration mismatch wiht rxjs operators

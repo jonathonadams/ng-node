@@ -33,11 +33,9 @@
   },
   "dependencies": {
     "@angular-devkit/architect": "^0.1000.3",
-    "@types/glob": "^7.1.3",
     "@uqt/ts-path-replace": "^1.0.0",
     "cp-file": "^9.0.0",
     "cross-env": "^7.0.2",
-    "del": "^5.1.0",
     "dotenv": "^8.1.0",
     "glob": "^7.1.6",
     "tree-kill": "^1.2.2"

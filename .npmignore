@@ -10,3 +10,4 @@ setup-jest.js
 package-lock.json
 coverage/*
 example/**
+src/__tests__
