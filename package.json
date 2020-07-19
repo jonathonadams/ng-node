@@ -1,6 +1,6 @@
 {
   "name": "@uqt/ng-node",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "description": "Angular CLI builders for node applications",
   "builders": "builders.json",
   "type": "commonjs",

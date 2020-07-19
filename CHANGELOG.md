@@ -1,3 +1,22 @@
+# [1.0.0](https://github.com/jonathonadams/ng-node/compare/v0.0.6...v1.0.0) (2020-07-19)
+
+
+### Bug Fixes
+
+* **execute:** stop node executing before paths have been rewritten ([370927c](https://github.com/jonathonadams/ng-node/commit/370927ceb27849a00e4f0e412dcdfb54c909e2c0))
+* update all dependencies ([fac514e](https://github.com/jonathonadams/ng-node/commit/fac514ee475f1a76a50eff5bda04d69035313828))
+
+
+### Build System
+
+* change repository and move angular as peerDependency ([8058fbe](https://github.com/jonathonadams/ng-node/commit/8058fbe90f5806ea2ae7bff1a5582e51f6b390b4))
+
+
+### BREAKING CHANGES
+
+* angular-devkit/architect 0.x has been moved to a peer dependency and change the
+repository url.
+
 ## [0.0.6](https://github.com/unquenchablethyrst/ng-node/compare/v0.0.5...v0.0.6) (2020-01-23)
 
 
