@@ -1,13 +1,12 @@
-import { exec } from 'child_process';
-import { normalize } from 'path';
+// import { normalize } from 'path';
 import { Observable } from 'rxjs';
 import { mapTo, catchError, switchMap } from 'rxjs/operators';
-import { tsc, copy, ServerBuildSchema } from '../utils/utils';
+import { tsc, copy, ServerBuildSchema, tspr } from '../utils/utils';
 import treeKill from 'tree-kill';
 import {
   BuilderOutput,
   createBuilder,
-  BuilderContext
+  BuilderContext,
 } from '@angular-devkit/architect';
 
 /* istanbul ignore next */
@@ -26,16 +25,13 @@ function _buildApiBuilder(
   const {
     outputPath,
     src,
-    tsConfig
+    tsConfig,
   }: {
     outputPath: string;
     src: string;
     tsConfig: string;
   } = options;
 
-  // TODO Error Handling
-
-  //
   const tsc$ = tsc(options, context);
   const copy$ = copy(src, outputPath);
 
@@ -49,41 +45,10 @@ function _buildApiBuilder(
     switchMap(() => copy$),
     switchMap(() => tspr$),
     mapTo({ success: true }),
-    catchError(error => {
+    catchError((error) => {
       context.logger.error(error);
       context.reportStatus('Error: ' + error);
       return [{ success: false }];
     })
   );
-}
-
-export function tspr(
-  options: ServerBuildSchema,
-  context: BuilderContext
-): Observable<string> {
-  return new Observable<string>(observer => {
-    const command = `${normalize(
-      context.workspaceRoot + '/node_modules/.bin/tspr'
-    )}`;
-
-    const cp = exec(
-      `${command} --tsConfig ${options.tsConfig} --references`,
-      (error, stdout, stderr) => {
-        /* istanbul ignore if */
-        if (error) {
-          observer.error(error.toString());
-        }
-
-        context.logger.info(stdout);
-        observer.next(stdout);
-        observer.complete();
-      }
-    );
-
-    return {
-      unsubscribe() {
-        treeKill(cp.pid, 'SIGKILL');
-      }
-    };
-  });
 }

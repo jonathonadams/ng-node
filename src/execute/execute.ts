@@ -1,15 +1,22 @@
-import { platform, type } from 'os';
+import { platform } from 'os';
 import { spawn, SpawnOptionsWithoutStdio } from 'child_process';
 import { normalize } from 'path';
-import { Observable, combineLatest } from 'rxjs';
-import { tap, mapTo, catchError, switchMap, filter } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import {
+  tap,
+  mapTo,
+  catchError,
+  switchMap,
+  filter,
+  concatMap,
+} from 'rxjs/operators';
 import treeKill from 'tree-kill';
 import {
   BuilderOutput,
   createBuilder,
-  BuilderContext
+  BuilderContext,
 } from '@angular-devkit/architect';
-import { tsc, ServerExecuteSchema, copy } from '../utils/utils';
+import { tsc, ServerExecuteSchema, copy, tspr } from '../utils/utils';
 
 /* istanbul ignore next */
 process.on('SIGINT', () => {
@@ -29,29 +36,29 @@ function _executeApiBuilder(
 
   // Report running each time it recompile
   const tscWatch$ = tscWatch(options, context).pipe(
-    tap(data => {
+    tap((data) => {
       if (data.includes('Starting')) {
         context.reportRunning();
       }
     }),
     // Only emit (and hence restart the server) once it is watching
-    filter(data => data.includes('Watching'))
+    filter((data) => data.includes('Watching'))
   );
   /**
    * As typescript does not currently rewrite path aliases, use package '@uqt/ts-path-replace' in watch
    * mode to re-write all import aliases
    */
-  const tspr$ = tsprWatch(options, context);
-  const watching$ = combineLatest(tscWatch$, tspr$);
+  const tspr$ = tspr(options, context);
 
   const node$ = node(options, context);
 
   return tsc$.pipe(
     switchMap(() => copy$),
-    switchMap(() => watching$),
+    switchMap(() => tscWatch$),
+    concatMap(() => tspr$),
     switchMap(() => node$),
     mapTo({ success: true }),
-    catchError(error => {
+    catchError((error) => {
       context.logger.error(error);
       context.reportStatus('Error: ' + error);
       return [{ success: false }];
@@ -60,7 +67,7 @@ function _executeApiBuilder(
 }
 
 const spawnOptions: SpawnOptionsWithoutStdio = {
-  stdio: 'pipe'
+  stdio: 'pipe',
 };
 
 if (platform() === 'win32') {
@@ -71,7 +78,7 @@ export function tscWatch(
   options: ServerExecuteSchema,
   context: BuilderContext
 ): Observable<string> {
-  return new Observable(observer => {
+  return new Observable((observer) => {
     const command = `${normalize(
       context.workspaceRoot + '/node_modules/.bin/tsc'
     )}`;
@@ -82,13 +89,13 @@ export function tscWatch(
       spawnOptions
     );
 
-    cp.stdout.on('data', data => {
+    cp.stdout.on('data', (data) => {
       context.logger.info(data.toString());
       observer.next(data.toString());
     });
 
     /* istanbul ignore next */
-    cp.stderr.on('data', data => {
+    cp.stderr.on('data', (data) => {
       observer.error(data.toString());
     });
 
@@ -103,51 +110,7 @@ export function tscWatch(
     return {
       unsubscribe() {
         treeKill(cp.pid, 'SIGKILL');
-      }
-    };
-  });
-}
-
-export function tsprWatch(
-  options: ServerExecuteSchema,
-  context: BuilderContext
-): Observable<string> {
-  return new Observable(observer => {
-    const command = `${normalize(
-      context.workspaceRoot + '/node_modules/.bin/tspr'
-    )}`;
-
-    const cp = spawn(
-      command,
-      ['--tsConfig', options.tsConfig, '--watch', '--references'],
-      spawnOptions
-    );
-
-    cp.stdout.on('data', data => {
-      context.logger.info(data.toString());
-      observer.next(data.toString());
-    });
-
-    /* istanbul ignore next */
-    cp.stderr.on('data', (data: Buffer) => {
-      // TODO - this is so it supports node v10. Remove once v12 is released and stable
-      if (!data.toString().includes('The fs.promises API is experimental')) {
-        observer.error(data.toString());
-      }
-    });
-
-    cp.on('close', (code, signal) => {
-      if (code === 0) {
-        observer.complete();
-      } else {
-        observer.error({ code, signal });
-      }
-    });
-
-    return {
-      unsubscribe() {
-        treeKill(cp.pid, 'SIGKILL');
-      }
+      },
     };
   });
 }
@@ -156,7 +119,7 @@ export function node(
   options: ServerExecuteSchema,
   context: BuilderContext
 ): Observable<string> {
-  return new Observable<string>(observer => {
+  return new Observable<string>((observer) => {
     context.reportStatus(`Restarting Node application...`);
 
     const command = `${normalize(
@@ -173,7 +136,7 @@ export function node(
         '-r',
         'dotenv/config',
         `${options.outputPath}/${options.main}`,
-        `dotenv_config_path=${options.envPath}`
+        `dotenv_config_path=${options.envPath}`,
       ];
     } else {
       args = ['NODE_ENV=dev', 'node', `${options.outputPath}/${options.main}`];
@@ -181,14 +144,14 @@ export function node(
 
     const cp = spawn(command, args, spawnOptions);
 
-    cp.stdout.on('data', data => {
+    cp.stdout.on('data', (data) => {
       // DO not call on observer on next here, it wall report multiple success
       // for each chunk on the data stream
       context.logger.info(data.toString());
     });
 
     /* istanbul ignore next */
-    cp.stderr.on('data', data => {
+    cp.stderr.on('data', (data) => {
       // DO NOT call observer.error() here
       // stderr from the node process can just be deprecation warnings etc, don't want to stop the builder
       // It will cause the catchError to unsubscribe from all
@@ -209,7 +172,7 @@ export function node(
     return {
       unsubscribe() {
         treeKill(cp.pid, 'SIGKILL');
-      }
+      },
     };
   });
 }
