@@ -97,9 +97,7 @@ ng serve <PROJECT_NAME>
 
 ## Example
 
-For an example of using these builders in a code sharing monorepo that includes a frontend written in Angular and a backend written in [Koa](https://koajs.com/) that includes [GraphQL](https://graphql.org/), please see ...
-
-TODO Link to project when deployed
+For an example of using these builders in a code sharing monorepo that includes a frontend written in Angular and a backend written in [Koa](https://koajs.com/) that includes [GraphQL](https://graphql.org/), please see [zero-to-production.dev](https://zero-to-production.dev)
 
 ## Versioning
 
