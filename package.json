@@ -3,6 +3,7 @@
   "version": "0.0.6",
   "description": "Angular CLI builders for node applications",
   "builders": "builders.json",
+  "type": "commonjs",
   "repository": {
     "type": "git",
     "url": "https://github.com/unquenchablethyrst/ng-node"
@@ -31,33 +32,33 @@
     "semantic-release": "semantic-release"
   },
   "dependencies": {
-    "@angular-devkit/architect": "^0.803.23",
-    "@types/glob": "^7.1.1",
-    "@uqt/ts-path-replace": "^0.0.5",
-    "cp-file": "^7.0.0",
-    "cross-env": "^6.0.3",
+    "@angular-devkit/architect": "^0.1000.3",
+    "@types/glob": "^7.1.3",
+    "@uqt/ts-path-replace": "^1.0.0",
+    "cp-file": "^9.0.0",
+    "cross-env": "^7.0.2",
     "del": "^5.1.0",
     "dotenv": "^8.1.0",
     "glob": "^7.1.6",
     "tree-kill": "^1.2.2"
   },
   "devDependencies": {
-    "@commitlint/cli": "^8.3.5",
-    "@commitlint/config-conventional": "^8.3.4",
-    "@semantic-release/changelog": "^3.0.6",
-    "@semantic-release/git": "^8.0.0",
-    "@types/jest": "^24.9.0",
-    "@types/node": "^12.12.25",
-    "codecov": "^3.6.2",
-    "commitizen": "^4.0.3",
-    "cz-conventional-changelog": "^3.0.2",
-    "husky": "^4.2.0",
-    "jest": "^25.1.0",
-    "rimraf": "^3.0.0",
-    "semantic-release": "^16.0.3",
-    "ts-jest": "^25.0.0",
-    "tslint": "^5.20.1",
-    "typescript": "^3.7.5"
+    "@commitlint/cli": "^9.1.1",
+    "@commitlint/config-conventional": "^9.1.1",
+    "@semantic-release/changelog": "^5.0.1",
+    "@semantic-release/git": "^9.0.0",
+    "@types/jest": "^26.0.5",
+    "@types/node": "^14.0.23",
+    "codecov": "^3.7.1",
+    "commitizen": "^4.1.2",
+    "cz-conventional-changelog": "^3.2.0",
+    "husky": "^4.2.5",
+    "jest": "^26.1.0",
+    "rimraf": "^3.0.2",
+    "semantic-release": "^17.1.1",
+    "ts-jest": "^26.1.3",
+    "tslint": "^6.1.2",
+    "typescript": "^3.9.7"
   },
   "husky": {
     "hooks": {

@@ -7,7 +7,7 @@ import glob from 'glob';
 import cpFile from 'cp-file';
 import { BuilderContext } from '@angular-devkit/architect';
 import { JsonObject } from '@angular-devkit/core';
-import { Observable, of, forkJoin } from 'rxjs';
+import { Observable, of, forkJoin, EMPTY } from 'rxjs';
 import { map, switchMap, take } from 'rxjs/operators';
 // @ts-ignore
 import rimraf from 'rimraf';
@@ -27,7 +27,7 @@ export interface ServerExecuteSchema extends ServerBuildSchema {
 }
 
 export function globObservable(pattern: string): Observable<string[]> {
-  return new Observable(observer => {
+  return new Observable((observer) => {
     glob(pattern, (err, matches) => {
       if (err) {
         observer.error(err);
@@ -36,7 +36,7 @@ export function globObservable(pattern: string): Observable<string[]> {
       observer.next(matches);
 
       return {
-        unsubscribe() {} // no op
+        unsubscribe() {}, // no op
       };
     });
   });
@@ -47,7 +47,7 @@ export function nonTsFilePattern(rootDir: string): string {
 }
 
 export function outputFile(outPath: string, srcDir: string) {
-  return function(srcFile: string) {
+  return function (srcFile: string) {
     return `${outPath}${srcFile.substr(srcDir.length, srcFile.length)}`;
   };
 }
@@ -58,9 +58,9 @@ export async function removeExampleOutDir() {
 }
 
 export function hasTxtFileBeenCopied(): Promise<boolean> {
-  return new Promise((resolve, reject) => {
-    access('example/out/apps/api/text.txt', fs.constants.F_OK, err => {
-      err ? resolve(false) : resolve(true);
+  return new Promise((rs, re) => {
+    access('example/out/apps/api/text.txt', fs.constants.F_OK, (err) => {
+      err ? rs(false) : rs(true);
     });
   });
 }
@@ -69,7 +69,7 @@ export function tsc(
   options: ServerBuildSchema,
   context: BuilderContext
 ): Observable<string> {
-  return new Observable(observer => {
+  return new Observable((observer) => {
     const command = `${normalize(
       context.workspaceRoot + '/node_modules/.bin/tsc'
     )}`;
@@ -96,19 +96,19 @@ export function tsc(
     return {
       unsubscribe() {
         treeKill(cp.pid, 'SIGKILL');
-      }
+      },
     };
   });
 }
 
 export function copy(srcDir: string, outputPath: string): Observable<string> {
   return of(srcDir).pipe(
-    map(dir => nonTsFilePattern(dir)),
-    switchMap(pattern => globObservable(pattern)),
-    map(files => [files, files.map(outputFile(outputPath, srcDir))]),
+    map((dir) => nonTsFilePattern(dir)),
+    switchMap((dir) => globObservable(dir)),
+    map((files) => [files, files.map(outputFile(outputPath, srcDir))]),
     switchMap(([srcFiles, destFiles]) =>
       // if there are no source files, return an observable of empty object so it completes
-      srcFiles.length !== 0 ? filesCopied(srcFiles, destFiles) : of({})
+      srcFiles.length !== 0 ? filesCopied(srcFiles, destFiles) : EMPTY
     ),
     map(() => 'Non TS files copied into output directory'),
     take(1) // complete after first omit

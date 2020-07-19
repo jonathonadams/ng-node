@@ -3,8 +3,9 @@ import { TestingArchitectHost } from '@angular-devkit/architect/testing';
 import { logging, schema } from '@angular-devkit/core';
 import { take } from 'rxjs/operators';
 import { removeExampleOutDir, hasTxtFileBeenCopied } from '../utils/utils';
+import { join } from 'path';
 
-const { join } = require('path');
+// XXX -> deceleration mismatch wiht rxjs operators
 
 describe('Node Execute Builder', () => {
   let architect: Architect;
@@ -28,7 +29,7 @@ describe('Node Execute Builder', () => {
     await architectHost.addBuilderFromPackage(join(__dirname, '../..'));
   });
 
-  it('should compile the application', async done => {
+  it('should compile the application', async (done) => {
     const logger = new logging.Logger('');
     const output: BuilderOutput[] = [];
 
@@ -39,13 +40,15 @@ describe('Node Execute Builder', () => {
         src: 'example/apps/api/src',
         tsConfig: 'example/apps/api/tsconfig.json',
         main: 'index.js',
-        envPath: 'example/apps/api/.env'
+        envPath: 'example/apps/api/.env',
       },
       { logger }
     );
 
+    // XXX
+    // @ts-ignore
     run.output.pipe(take(2)).subscribe({
-      next: out => {
+      next: (out: BuilderOutput) => {
         output.push(out);
       },
       complete: async () => {
@@ -54,16 +57,16 @@ describe('Node Execute Builder', () => {
         await run.stop();
 
         // Check all output from the
-        output.forEach(builderOutput => {
+        output.forEach((builderOutput) => {
           expect(builderOutput.success).toBe(true);
         });
 
         done();
-      }
+      },
     });
   });
 
-  it('should copy non-TypeScript files to the output directory', async done => {
+  it('should copy non-TypeScript files to the output directory', async (done) => {
     const logger = new logging.Logger('');
 
     const run = await architect.scheduleBuilder(
@@ -73,11 +76,13 @@ describe('Node Execute Builder', () => {
         src: 'example/apps/api/src',
         tsConfig: 'example/apps/api/tsconfig.json',
         main: 'index.js',
-        envPath: 'example/apps/api/.env'
+        envPath: 'example/apps/api/.env',
       },
       { logger }
     );
 
+    // XXX
+    // @ts-ignore
     run.output.pipe(take(2)).subscribe({
       // Clean up on the completion
       complete: async () => {
@@ -89,15 +94,15 @@ describe('Node Execute Builder', () => {
         expect(copied).toBe(true);
 
         done();
-      }
+      },
     });
   });
 
-  it('should run the application', async done => {
+  it('should run the application', async (done) => {
     const logger = new logging.Logger('');
     const logs: string[] = [];
 
-    logger.subscribe(ev => logs.push(ev.message));
+    logger.subscribe((ev) => logs.push(ev.message));
 
     const run = await architect.scheduleBuilder(
       '@uqt/ng-node:execute',
@@ -106,11 +111,13 @@ describe('Node Execute Builder', () => {
         src: 'example/apps/api/src',
         tsConfig: 'example/apps/api/tsconfig.json',
         main: 'index.js',
-        envPath: 'example/apps/api/.env'
+        envPath: 'example/apps/api/.env',
       },
       { logger }
     ); // We pass the logger for checking later.
 
+    // XXX
+    // @ts-ignore
     run.output.pipe(take(2)).subscribe({
       // Clean up on the completion
       complete: async () => {
@@ -121,15 +128,15 @@ describe('Node Execute Builder', () => {
         const logFile = logs.toString();
         expect(logFile).toContain('Logging from Lib 1');
         done();
-      }
+      },
     });
   });
 
-  it('should pull in the environment variables from the .env file', async done => {
+  it('should pull in the environment variables from the .env file', async (done) => {
     const logger = new logging.Logger('');
     const logs: string[] = [];
 
-    logger.subscribe(ev => logs.push(ev.message));
+    logger.subscribe((ev) => logs.push(ev.message));
 
     const run = await architect.scheduleBuilder(
       '@uqt/ng-node:execute',
@@ -138,11 +145,13 @@ describe('Node Execute Builder', () => {
         src: 'example/apps/api/src',
         tsConfig: 'example/apps/api/tsconfig.json',
         main: 'index.js',
-        envPath: 'example/apps/api/.env'
+        envPath: 'example/apps/api/.env',
       },
       { logger }
     );
 
+    // XXX
+    // @ts-ignore
     run.output.pipe(take(2)).subscribe({
       // Clean up on the completion
       complete: async () => {
@@ -153,15 +162,15 @@ describe('Node Execute Builder', () => {
         const logFile = logs.toString();
         expect(logFile).toContain('SOME TEST ENVIRONMENT VARIABLE');
         done();
-      }
+      },
     });
   });
 
-  it('should not pull in the environment variables if no file path is provided', async done => {
+  it('should not pull in the environment variables if no file path is provided', async (done) => {
     const logger = new logging.Logger('');
     const logs: string[] = [];
 
-    logger.subscribe(ev => logs.push(ev.message));
+    logger.subscribe((ev) => logs.push(ev.message));
 
     const run = await architect.scheduleBuilder(
       '@uqt/ng-node:execute',
@@ -169,11 +178,13 @@ describe('Node Execute Builder', () => {
         outputPath: 'example/out/apps/api',
         src: 'example/apps/api/src',
         tsConfig: 'example/apps/api/tsconfig.json',
-        main: 'index.js'
+        main: 'index.js',
       },
       { logger }
     ); // We pass the logger for checking later.
 
+    // XXX
+    // @ts-ignore
     run.output.pipe(take(2)).subscribe({
       // Clean up on the completion
       complete: async () => {
@@ -184,11 +195,11 @@ describe('Node Execute Builder', () => {
         const logFile = logs.toString();
         expect(logFile).not.toContain('SOME TEST ENVIRONMENT VARIABLE');
         done();
-      }
+      },
     });
   });
 
-  it('should report unsuccessfully if an error is thrown', async done => {
+  it('should report unsuccessfully if an error is thrown', async (done) => {
     const logger = new logging.Logger('');
     const output: BuilderOutput[] = [];
 
@@ -198,13 +209,15 @@ describe('Node Execute Builder', () => {
         outputPath: 'example/out/apps/api',
         src: 'example/apps/api/src',
         tsConfig: 'some/wrong/file/path.json',
-        main: 'index.js'
+        main: 'index.js',
       },
       { logger }
     ); // We pass the logger for checking later.
 
+    // XXX
+    // @ts-ignore
     run.output.pipe(take(2)).subscribe({
-      next: out => {
+      next: (out: BuilderOutput) => {
         output.push(out);
       },
       // Clean up on the completion
@@ -213,12 +226,12 @@ describe('Node Execute Builder', () => {
         await run.stop();
 
         // Check all output from the
-        output.forEach(builderOutput => {
+        output.forEach((builderOutput) => {
           expect(builderOutput.success).toBe(false);
         });
 
         done();
-      }
+      },
     });
   });
 });
