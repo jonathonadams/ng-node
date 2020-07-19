@@ -2,9 +2,7 @@ import { Architect, BuilderOutput } from '@angular-devkit/architect';
 import { TestingArchitectHost } from '@angular-devkit/architect/testing';
 import { logging, schema } from '@angular-devkit/core';
 import { removeExampleOutDir, hasTxtFileBeenCopied } from '../utils/utils';
-import { take } from 'rxjs/operators';
-
-const { join } = require('path');
+import { join } from 'path';
 
 describe('Node Build Builder', () => {
   let architect: Architect;
@@ -28,7 +26,7 @@ describe('Node Build Builder', () => {
     await architectHost.addBuilderFromPackage(join(__dirname, '../..'));
   });
 
-  it('should compile the application', async done => {
+  it('should compile the application', async (done) => {
     const logger = new logging.Logger('');
     const output: BuilderOutput[] = [];
 
@@ -37,23 +35,23 @@ describe('Node Build Builder', () => {
       {
         outputPath: 'example/out/apps/api',
         src: 'example/apps/api/src',
-        tsConfig: 'example/apps/api/tsconfig.json'
+        tsConfig: 'example/apps/api/tsconfig.json',
       },
       { logger }
     ); // We pass the logger for checking later.
 
     run.output.subscribe(
-      out => {
+      (out) => {
         output.push(out);
       },
-      error => {},
+      (error) => {},
       // Clean up on the completion
       async () => {
         // Stop the builder
         await run.stop();
 
         // Check all output from the
-        output.forEach(builderOutput => {
+        output.forEach((builderOutput) => {
           expect(builderOutput.success).toBe(true);
         });
 
@@ -62,7 +60,7 @@ describe('Node Build Builder', () => {
     );
   });
 
-  it('should copy non-TypeScript files to the output directory', async done => {
+  it('should copy non-TypeScript files to the output directory', async (done) => {
     const logger = new logging.Logger('');
 
     const run = await architect.scheduleBuilder(
@@ -70,14 +68,14 @@ describe('Node Build Builder', () => {
       {
         outputPath: 'example/out/apps/api',
         src: 'example/apps/api/src',
-        tsConfig: 'example/apps/api/tsconfig.json'
+        tsConfig: 'example/apps/api/tsconfig.json',
       },
       { logger }
     ); // We pass the logger for checking later.
 
     run.output.subscribe(
-      out => {},
-      error => {},
+      (out) => {},
+      (error) => {},
       // Clean up on the completion
       async () => {
         // See if the text.txt has been copied (this is confirmed if the application runs anyway)
@@ -89,7 +87,7 @@ describe('Node Build Builder', () => {
     );
   });
 
-  it('should report unsuccessfully if an error is thrown', async done => {
+  it('should report unsuccessfully if an error is thrown', async (done) => {
     const logger = new logging.Logger('');
     const output: BuilderOutput[] = [];
 
@@ -98,23 +96,23 @@ describe('Node Build Builder', () => {
       {
         outputPath: 'example/out/apps/api',
         src: 'example/apps/api/src',
-        tsConfig: 'some/wrong/file/path.json'
+        tsConfig: 'some/wrong/file/path.json',
       },
       { logger }
     ); // We pass the logger for checking later.
 
     run.output.subscribe(
-      out => {
+      (out) => {
         output.push(out);
       },
-      error => {},
+      (error) => {},
       // Clean up on the completion
       async () => {
         // Stop the builder
         await run.stop();
 
         // Check all output from the
-        output.forEach(builderOutput => {
+        output.forEach((builderOutput) => {
           expect(builderOutput.success).toBe(false);
         });
 
