@@ -2,14 +2,7 @@ import { platform } from 'os';
 import { spawn, SpawnOptionsWithoutStdio } from 'child_process';
 import { normalize } from 'path';
 import { Observable } from 'rxjs';
-import {
-  tap,
-  mapTo,
-  catchError,
-  switchMap,
-  filter,
-  concatMap,
-} from 'rxjs/operators';
+import { tap, mapTo, catchError, switchMap, filter } from 'rxjs/operators';
 import treeKill from 'tree-kill';
 import {
   BuilderOutput,
@@ -55,7 +48,7 @@ function _executeApiBuilder(
   return tsc$.pipe(
     switchMap(() => copy$),
     switchMap(() => tscWatch$),
-    concatMap(() => tspr$),
+    switchMap(() => tspr$),
     switchMap(() => node$),
     mapTo({ success: true }),
     catchError((error) => {
