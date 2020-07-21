@@ -55,7 +55,7 @@ function _executeApiBuilder(
   return tsc$.pipe(
     switchMap(() => copy$),
     switchMap(() => tscWatch$),
-    concatMap(() => tspr$),
+    switchMap(() => tspr$),
     switchMap(() => node$),
     mapTo({ success: true }),
     catchError((error) => {
