@@ -1,3 +1,15 @@
+## [1.0.1](https://github.com/jonathonadams/ng-node/compare/v1.0.0...v1.0.1) (2020-07-21)
+
+
+### Bug Fixes
+
+* update ts-path-replace to handle no output directory ([9f156a7](https://github.com/jonathonadams/ng-node/commit/9f156a7e7cd912c34cfafd01cbe948ab113e73be))
+
+
+### Reverts
+
+* revert concatMap operator on execute builder ([9d6e51f](https://github.com/jonathonadams/ng-node/commit/9d6e51f1cfa982884450deb1fb509156a553c127))
+
 # [1.0.0](https://github.com/jonathonadams/ng-node/compare/v0.0.6...v1.0.0) (2020-07-19)
 
 
