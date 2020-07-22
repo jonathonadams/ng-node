@@ -32,7 +32,7 @@
     "semantic-release": "semantic-release"
   },
   "dependencies": {
-    "@uqt/ts-path-replace": "^1.0.1",
+    "@uqt/ts-path-replace": "^1.0.2",
     "cp-file": "^9.0.0",
     "cross-env": "^7.0.2",
     "dotenv": "^8.1.0",
