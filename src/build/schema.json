@@ -2,20 +2,15 @@
   "$schema": "http://json-schema.org/schema",
   "type": "object",
   "properties": {
-    "options": {
-      "type": "object",
-      "properties": {
-        "outputPath": {
-          "type": "string"
-        },
-        "src": {
-          "type": "string"
-        },
-        "tsConfig": {
-          "type": "string"
-        }
-      },
-      "required": ["outputPath", "src", "tsConfig"]
+    "outputPath": {
+      "type": "string"
+    },
+    "src": {
+      "type": "string"
+    },
+    "tsConfig": {
+      "type": "string"
     }
-  }
+  },
+  "required": ["outputPath", "src", "tsConfig"]
 }
