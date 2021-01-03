@@ -1,3 +1,15 @@
+# [2.0.0](https://github.com/jonathonadams/ng-node/compare/v1.0.2...v2.0.0) (2021-01-03)
+
+
+### Features
+
+* update schema to support angular cli v11 ([031151e](https://github.com/jonathonadams/ng-node/commit/031151e3851a351a13c80811f053a00d7530e746))
+
+
+### BREAKING CHANGES
+
+* Schema validation will not pass on any version prior to Angular CLI v11
+
 ## [1.0.2](https://github.com/jonathonadams/ng-node/compare/v1.0.1...v1.0.2) (2020-07-22)
 
 
